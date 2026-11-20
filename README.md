@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="portfolio/assets/sunwalks-brand-badge.png" alt="SunWalks isometric city, sun, shadow, and walking-route badge" width="260" />
+</p>
+
 # SunWalks
 
 **A weather-aware urban sunlight and shade simulator for pedestrian-scale Toronto.**
@@ -6,7 +10,7 @@ SunWalks explores a practical question that conventional maps do not answer: **w
 
 [Explore the engineering dashboard](https://nastajus.github.io/SunWalks/) · [View the source data](#data-and-attribution) · [See the roadmap](#next-goals)
 
-![SunWalks home-area simulation overview](portfolio/assets/home-area-overview.png)
+![SunWalks home-area simulation overview with enhanced building and shadow contrast](portfolio/assets/home-area-overview--richer-contrast.png)
 
 > This repository is a curated portfolio overview. The complete Unity project and its development history are not currently published here.
 
@@ -37,6 +41,12 @@ The current home-area scene is generated around a real downtown Toronto origin a
 
 These counts describe the current imported preview, not a claim of complete real-world coverage.
 
+## City-scale shadow geometry
+
+The generated city is compared with official Toronto aerial imagery to evaluate building alignment, projected-shadow direction, and the much harder problem of tree and canopy coverage. The sharp shadows in the reference make the core objective tangible: SunWalks is not only drawing a map, but trying to model where direct sunlight is physically blocked at pedestrian scale.
+
+![Official Toronto aerial reference showing strong building and canopy shadows](portfolio/assets/toronto-aerial-reference.png)
+
 ## Major features
 
 ### Geospatial scene generation
@@ -53,7 +63,12 @@ These counts describe the current imported preview, not a claim of complete real
 - Drives a directional sun light and exposes a looping 24-hour simulation control.
 - Synchronizes current Toronto weather and radiation fields through Open-Meteo.
 - Models clear, broken-cloud, overcast, fog, precipitation, heat-haze, twilight, and seasonal lighting states.
+- Adjusts sky, ambient, direct-light, and surface hues across dawn, daylight, twilight, and night; the clock can run in real time, at an accelerated pace, or at a manually selected hour.
 - Separates native Unity cast shadows, lighting profiles, projected diagnostics, and approximate tree dapple shade so each system can be tested independently.
+
+The following Android captures use the same scene and camera while the 24-hour simulation is scrubbed through six representative times. They document the current visual color progression rather than claiming photometric calibration.
+
+![SunWalks time-of-day lighting spectrum from dawn through night on Android](portfolio/assets/time-of-day-lighting-spectrum.png)
 
 ### Map readability
 
@@ -75,6 +90,10 @@ These counts describe the current imported preview, not a claim of complete real
 - Exposes sun angle, radiation, weather gating, label coverage, shadow state, caster / receiver counts, tree budgets, walk range, and camera state in the runtime HUD.
 - Maintains a React engineering dashboard with implementation reports, regression postmortems, data audits, source links, and durable project guidance.
 - Includes repeatable VS Code launch, Unity build, Android deployment, and dashboard workflows.
+
+### Predictive shade-aware routing
+
+The route prototype already samples direct-sun exposure along candidate graph edges and changes their cost for shade-seeking, sun-seeking, or balanced preferences. The planned next layer is a forward-looking comfort heuristic: score the path ahead, estimate upcoming sunny and shaded stretches, and recommend whether to remain in shade, cross toward a better-covered segment, or use a sunny "oasis" before a long shadowed stretch. This turns the simulation from a passive map into a walking decision aid while keeping the recommendation explainable.
 
 ## System architecture
 
@@ -113,15 +132,23 @@ Matching perceived outdoor brightness is not the same problem as enabling projec
 
 The Android build uses reduced label and tree budgets, throttled lighting / label refreshes, input smoothing, and optional simplification while the camera is moving. The current approach is suitable for prototyping; city-scale deployment will require tiled streaming, LODs, and stronger profiling.
 
+### Tree coverage is the limiting dataset
+
+Tree accuracy is currently the largest data risk. Toronto's physical-tree layer provides useful aerial/LiDAR-derived point locations and height attributes, but points can be missed near tall buildings or deep shadow and they do not describe crown shape. The generalized Green Spaces layer is also not an exhaustive parcel-level inventory of private lawns. Private and institutional canopy is visible in aerial imagery, so the project cannot safely treat either dataset as complete or assume that all private trees are absent. The intended reconciliation combines physical-tree points, Forest and Land Cover or canopy polygons, aerial imagery, crown estimation, and duplicate suppression with an explicit spatial tolerance. Coverage must be measured against imagery before route-level shade claims become trustworthy.
+
 ## Visual development
 
-| Android lighting and label-density controls | Engineering and regression dashboard |
+### Android lighting and label-density controls
+
+| Android prototype | What this view demonstrates |
 | --- | --- |
-| <img src="portfolio/assets/mobile-lighting-controls.png" alt="SunWalks Android build showing the lighting simulation and label density controls" width="360" /> | <img src="portfolio/assets/engineering-dashboard.png" alt="SunWalks React engineering dashboard" width="720" /> |
+| <img src="portfolio/assets/mobile-lighting-controls.png" alt="SunWalks Android build showing lighting simulation and label density controls" width="360" /> | The touch HUD exposes simulated time, lighting and shadow profiles, weather state, label budgets, and scene diagnostics directly on the phone. Its collapsible modes preserve map space while keeping the same core controls available on desktop and Android. |
 
-The project also compares generated geometry against official Toronto aerial imagery while evaluating tree and canopy coverage:
+### Engineering and regression dashboard
 
-![Official Toronto aerial reference used during the tree-data audit](portfolio/assets/toronto-aerial-reference.png)
+The dashboard preserves implementation reports, failed approaches, regression timelines, source audits, screenshots, and durable engineering guidance. It is intentionally shown at full width because the report index and evidence columns become difficult to inspect when compressed beside a portrait capture.
+
+![SunWalks engineering and regression dashboard](portfolio/assets/engineering-dashboard.png)
 
 ## Data and attribution
 
@@ -150,6 +177,7 @@ The current Unity preview uses OSM-derived building massing. City datasets are e
 
 - Building footprints and road geometry are useful visual approximations, not survey-grade models.
 - Tree crowns and fragmented canopy shadows are inferred from point data and adjustable heuristics.
+- Current tree coverage is incomplete and has not yet been quantitatively reconciled against aerial canopy across the full scene.
 - Weather-aware lighting is visually calibrated but is not a physically based atmospheric simulation.
 - Shade-aware route scoring exists as a prototype graph cost, but the home-area scene is not yet a complete pedestrian-network router.
 - The HUD prioritizes diagnostics over final consumer-product visual design.
@@ -157,8 +185,8 @@ The current Unity preview uses OSM-derived building massing. City datasets are e
 ## Next goals
 
 1. Replace preview building massing with clipped, validated City of Toronto 3D Massing tiles and explicit LODs.
-2. Build a true pedestrian-network reachability and route pipeline rather than using a circular walk envelope.
-3. Reconcile tree points with canopy / land-cover data and quantify false positives, missed canopy, and duplicate sources.
+2. Build a true pedestrian-network reachability and route pipeline with forward-looking sun/shade scoring rather than using a circular walk envelope.
+3. Reconcile tree points with canopy / land-cover data and aerial imagery, then quantify false positives, missed canopy, crown uncertainty, and duplicate sources.
 4. Add reproducible solar, coordinate, route-cost, and scene-import tests.
 5. Capture a concise portfolio demo showing time-of-day change, weather modes, label decluttering, GPS follow, and Android interaction.
 6. Profile and stream geographic tiles so the simulation can expand beyond the current local scene.
