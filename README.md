@@ -27,7 +27,7 @@ The long-term goal is a route system that can answer questions such as:
 
 ## Current prototype
 
-The current home-area scene is generated around a real downtown Toronto origin and runs on desktop and Android.
+The current home-area scene is generated around one configured downtown Toronto origin and runs on desktop and Android. A future named-place model will let users add and switch among Home, Work, and other personal points of interest without rebuilding the scene.
 
 | Scene layer | Current prototype scale |
 | --- | ---: |
@@ -52,7 +52,8 @@ The generated city is compared with official Toronto aerial imagery to evaluate 
 ### Geospatial scene generation
 
 - Converts latitude and longitude into a local Unity metre coordinate system.
-- Extrudes OpenStreetMap building footprints into selectable 3D massing.
+- Batch-creates inspectable Unity objects from geographic data arrays: building footprints become extruded meshes, roads become paths, and address/POI records become selectable markers.
+- Preserves imported footprint orientation from source coordinates and rotates generated context landmarks to Toronto's local street-grid alignment, with per-landmark orientation offsets where required.
 - Builds roads, paths, address points, green spaces, landmark context, and a simplified waterfront as separate inspectable layers.
 - Preserves city-grid orientation rather than assuming that Toronto aligns with world north.
 - Supports a dynamic one-to-ten-minute walk-range filter for visible scene content.
@@ -81,9 +82,17 @@ The following Android captures use the same scene and camera while the 24-hour s
 
 - Provides Unity-style and Blender-style camera navigation.
 - Bridges Game View pan, orbit, and wheel zoom into Unity edit mode as well as play mode.
+- Supports click selection in the stopped/edit-time Game View, including geometry-aware outlines and object-name labels; this required explicit editor event routing and HUD hit testing rather than relying on play-mode input.
 - Includes a resizable, collapsible, searchable HUD with desktop and touch interaction.
 - Supports Android auto-rotation, touch smoothing, mobile label budgets, simplified rendering while moving, and ARM64 IL2CPP builds.
 - Includes experimental GPS tracking, auto-follow, an accuracy marker, and a reference grid that can align to true north or Toronto's street grid.
+
+### Runtime control surface
+
+- Cycles among Full, Mini, XS, and Hidden HUD modes and preserves layout preferences between runs.
+- Groups time simulation, lighting/shadows, label density, weather, route comfort, navigation/GPS, and project-source diagnostics into searchable colored sections.
+- Provides a looping 24-hour time control, live-time re-sync, lighting profiles, native-shadow diagnostics, label and walk-range controls, weather artifacts, GPS follow, camera limits, and source links.
+- Uses desktop hover and mobile press-and-hold tooltips, plus a retract tab that preserves map space without discarding the current HUD state.
 
 ### Engineering observability
 
@@ -94,6 +103,10 @@ The following Android captures use the same scene and camera while the 24-hour s
 ### Predictive shade-aware routing
 
 The route prototype already samples direct-sun exposure along candidate graph edges and changes their cost for shade-seeking, sun-seeking, or balanced preferences. The planned next layer is a forward-looking comfort heuristic: score the path ahead, estimate upcoming sunny and shaded stretches, and recommend whether to remain in shade, cross toward a better-covered segment, or use a sunny "oasis" before a long shadowed stretch. This turns the simulation from a passive map into a walking decision aid while keeping the recommendation explainable.
+
+### User-defined places
+
+The present prototype has one configured scene origin and one explicit Home marker. Imported addresses and POIs are map features, and live GPS can become the active tracked position, but neither system currently creates persistent named centers. The planned interaction is an in-app place manager where a user can add Home, Work, or another destination from a map click, long press, selected object, search result, or current GPS position; rename it; choose the active walk-analysis center; and retain several places without regenerating source data.
 
 ## System architecture
 
@@ -142,7 +155,7 @@ Tree accuracy is currently the largest data risk. Toronto's physical-tree layer 
 
 | Android prototype | What this view demonstrates |
 | --- | --- |
-| <img src="portfolio/assets/mobile-lighting-controls.png" alt="SunWalks Android build showing lighting simulation and label density controls" width="360" /> | The touch HUD exposes simulated time, lighting and shadow profiles, weather state, label budgets, and scene diagnostics directly on the phone. Its collapsible modes preserve map space while keeping the same core controls available on desktop and Android. |
+| <img src="portfolio/assets/mobile-hud-controls.png" alt="Three Android SunWalks HUD views showing time simulation, label density and walk range, and sun/weather diagnostics" width="720" /> | The touch HUD exposes simulated time, lighting and shadow profiles, weather state, label budgets, walk range, navigation, and scene diagnostics directly on the phone. Its searchable colored groups and collapsible modes preserve map space while keeping the same core controls available on desktop and Android. The engineering dashboard records the remaining portrait-layout and gesture limitations. |
 
 ### Engineering and regression dashboard
 
@@ -180,6 +193,7 @@ The current Unity preview uses OSM-derived building massing. City datasets are e
 - Current tree coverage is incomplete and has not yet been quantitatively reconciled against aerial canopy across the full scene.
 - Weather-aware lighting is visually calibrated but is not a physically based atmospheric simulation.
 - Shade-aware route scoring exists as a prototype graph cost, but the home-area scene is not yet a complete pedestrian-network router.
+- Multiple persistent Home/Work/custom centers and native in-app place authoring are planned, not currently implemented.
 - The HUD prioritizes diagnostics over final consumer-product visual design.
 
 ## Next goals
@@ -188,8 +202,9 @@ The current Unity preview uses OSM-derived building massing. City datasets are e
 2. Build a true pedestrian-network reachability and route pipeline with forward-looking sun/shade scoring rather than using a circular walk envelope.
 3. Reconcile tree points with canopy / land-cover data and aerial imagery, then quantify false positives, missed canopy, crown uncertainty, and duplicate sources.
 4. Add reproducible solar, coordinate, route-cost, and scene-import tests.
-5. Capture a concise portfolio demo showing time-of-day change, weather modes, label decluttering, GPS follow, and Android interaction.
-6. Profile and stream geographic tiles so the simulation can expand beyond the current local scene.
+5. Add user-managed named places and switching among Home, Work, GPS, and custom analysis centers.
+6. Capture a concise portfolio demo showing time-of-day change, weather modes, label decluttering, GPS follow, and Android interaction.
+7. Profile and stream geographic tiles so the simulation can expand beyond the current local scene.
 
 ## Project status
 
