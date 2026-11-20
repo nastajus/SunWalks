@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 360" role="img" aria-labelledby="title desc">
+  <title id="title">Repeated street label overlap problem</title>
+  <desc id="desc">A simplified recreation of the user-provided Unity screenshot where many repeated street labels overlap over a dense city scene.</desc>
+  <rect width="720" height="360" fill="#c9d7d4"/>
+  <g opacity="0.9">
+    <rect x="30" y="42" width="95" height="128" fill="#9aa9ac"/>
+    <rect x="142" y="28" width="70" height="92" fill="#7f9096"/>
+    <rect x="245" y="70" width="84" height="145" fill="#b9c5c4"/>
+    <rect x="355" y="36" width="58" height="122" fill="#6f7e83"/>
+    <rect x="444" y="92" width="88" height="180" fill="#a9b7b8"/>
+    <rect x="578" y="62" width="92" height="155" fill="#8d9fa4"/>
+    <rect x="86" y="218" width="128" height="94" fill="#b7c2bf"/>
+    <rect x="285" y="236" width="128" height="82" fill="#7d8c91"/>
+    <rect x="516" y="244" width="124" height="76" fill="#b3bfbd"/>
+  </g>
+  <g fill="none" stroke-linecap="round">
+    <path d="M0 320 L180 244 L360 162 L720 50" stroke="#536466" stroke-width="13"/>
+    <path d="M0 320 L180 244 L360 162 L720 50" stroke="#eef4ef" stroke-width="5"/>
+    <path d="M120 0 L150 96 L190 210 L245 360" stroke="#536466" stroke-width="13"/>
+    <path d="M120 0 L150 96 L190 210 L245 360" stroke="#eef4ef" stroke-width="5"/>
+    <path d="M338 0 L360 92 L385 190 L425 360" stroke="#536466" stroke-width="13"/>
+    <path d="M338 0 L360 92 L385 190 L425 360" stroke="#eef4ef" stroke-width="5"/>
+    <path d="M545 0 L540 100 L542 228 L560 360" stroke="#536466" stroke-width="13"/>
+    <path d="M545 0 L540 100 L542 228 L560 360" stroke="#eef4ef" stroke-width="5"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="800" stroke="#000" stroke-width="5" paint-order="stroke" stroke-linejoin="round">
+    <g fill="#61e7ff">
+      <text x="136" y="63" transform="rotate(74 136 63)">Bay Street</text>
+      <text x="166" y="153" transform="rotate(74 166 153)">Bay Street</text>
+      <text x="198" y="246" transform="rotate(74 198 246)">Bay Street</text>
+      <text x="348" y="76" transform="rotate(75 348 76)">Yonge Street</text>
+      <text x="380" y="172" transform="rotate(75 380 172)">Yonge Street</text>
+      <text x="410" y="270" transform="rotate(75 410 270)">Yonge Street</text>
+      <text x="530" y="100" transform="rotate(92 530 100)">Yonge Street</text>
+      <text x="542" y="218" transform="rotate(92 542 218)">Yonge Street</text>
+    </g>
+    <g fill="#ffffff">
+      <text x="140" y="265" transform="rotate(-25 140 265)">College Street</text>
+      <text x="322" y="182" transform="rotate(-25 322 182)">College Street</text>
+      <text x="506" y="96" transform="rotate(-25 506 96)">College Street</text>
+    </g>
+    <g fill="#ffd96b">
+      <text x="418" y="140">43.659932</text>
+      <text x="300" y="42" transform="rotate(-12 300 42)">777</text>
+    </g>
+  </g>
+</svg>
