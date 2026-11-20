@@ -153,9 +153,21 @@ Tree accuracy is currently the largest data risk. Toronto's physical-tree layer 
 
 ### Android lighting and label-density controls
 
-| Android prototype | What this view demonstrates |
-| --- | --- |
-| <img src="portfolio/assets/mobile-hud-controls.png" alt="Three Android SunWalks HUD views showing time simulation, label density and walk range, and sun/weather diagnostics" width="720" /> | The touch HUD exposes simulated time, lighting and shadow profiles, weather state, label budgets, walk range, navigation, and scene diagnostics directly on the phone. Its searchable colored groups and collapsible modes preserve map space while keeping the same core controls available on desktop and Android. The engineering dashboard records the remaining portrait-layout and gesture limitations. |
+<table>
+  <tr>
+    <th width="78%">Android runtime controls</th>
+    <th width="22%">Control overview</th>
+  </tr>
+  <tr>
+    <td width="78%">
+      <img src="portfolio/assets/mobile-hud-controls.png" alt="Three Android SunWalks HUD views showing time simulation, label density and walk range, and sun/weather diagnostics" width="100%" />
+    </td>
+    <td width="22%">
+      Time simulation, lighting and shadows, label density, walk range, weather, navigation, and diagnostics remain available through searchable, collapsible groups.<br /><br />
+      <a href="https://nastajus.github.io/SunWalks/">Explore the engineering dashboard</a>
+    </td>
+  </tr>
+</table>
 
 ### Engineering and regression dashboard
 
